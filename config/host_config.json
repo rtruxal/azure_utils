@@ -1,0 +1,15 @@
+{
+  "subscription_id": "11111111-1111-1111-111-111111111111",
+
+  "resource_group": "ExampleResourceGroup",
+  "hosts": [
+    {
+      "cmdline_hostname": "foo_host_1",
+      "azure_hostname": "FooDBServerExampleResourceGroup"
+    },
+    {
+      "cmdline_hostname": "foo_host_2",
+      "azure_hostname": "FooWebServerExampleResourceGroup"
+    }
+  ]
+}
