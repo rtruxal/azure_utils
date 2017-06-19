@@ -4,14 +4,17 @@ import argparse
 import json
 import pkg_resources
 
-from .utils.custom_errors import JSONConfigurationException, ArgumentException
+from .utils.custom_errors import JSONInfileConfigException
+from .utils.custom_errors import ArgumentException
+from .utils.custom_errors import READ_THE_DAMN_WARNING_FILE
+from .utils.custom_errors import RTDWFITDD_messages
 from .vm_tasks import deallocate
 from .vm_tasks import get_status
 from .vm_tasks import turn_off
 from .vm_tasks import turn_on
 
-class ICANN(dict):
 
+class ICANN(dict):
     def __init__(self, use_config_file=True):
         super(ICANN, self).__init__()
 
@@ -32,16 +35,24 @@ class ICANN(dict):
         }
 
         # either use the config file or manually insert the nicknames you want to give your remote hosts.
+
         if use_config_file is True:
+            from azure_utils import get_data
+            try:
+                with open(get_data('data/host_config.json'), 'r') as jsonfile:
+                    config_dict = json.load(jsonfile)
+            except Exception:
+                config_dict = json.load(pkg_resources.resource_stream('config', 'host_config.json'))
+            finally:
+                del get_data
             try:
                 # TODO: NICE LIST-COMPREHENSIONS DAWG. THEY WORK?
-                config_dict = json.load(pkg_resources.resource_stream('config', 'host_config.json'))
                 self['host_nicknames'] = tuple([host_record['cmdline_hostname'] for host_record in config_dict.get('hosts')])
                 self['host_realnames'] = tuple([host_record['azure_hostname'] for host_record in config_dict.get('hosts')])
                 self['host_mappings'] = dict(zip(self['host_nicknames'], self['host_realnames']))
                 self['resource_group'] = config_dict.get('resource_group')
             except Exception:
-                raise JSONConfigurationException('There was an error while parsing your host_config.json file.')
+                raise JSONInfileConfigException('There was an error while parsing your host_config.json file.')
         # Note that if the config file isn't used, the `host_X` values are designated in reverse order.
         # I can't think of a potential issue with this, but when has anyone thought of actual potential issues.
         else:
@@ -111,11 +122,35 @@ def main(args=None):
 
         # handle credential-type
         if arrgs.json_credentials:
-            # This loads the data-files using the 'config' keyword defined in setup.py
-            cred_dict = json.load(pkg_resources.resource_stream('config', 'credentials_config.json'))
+            # import pdb
+            # pdb.set_trace()
+            from azure_utils import get_data
+            try:
+                # This uses the function `get_data()` from the top-level __init__.py file.
+                with open(get_data('data/credentials_config.json'), 'r') as jsonfile:
+                    cred_dict = json.load(jsonfile)
+            except Exception:
+                # This loads the data-files using the 'config' keyword defined in setup.py
+                cred_dict = json.load(pkg_resources.resource_stream('config', 'credentials_config.json'))
+            finally:
+                del get_data
+
+            # Check if warnings have been read.
+            if cred_dict.get('have_read_warning') == False:
+                #than we haven't changed the credfile man.
+                raise READ_THE_DAMN_WARNING_FILE(RTDWFITDD_messages.read_warning_false())
+            elif cred_dict.get('have_read_warning') == True:
+                # someone changed the credfile without reading the warning!
+                raise READ_THE_DAMN_WARNING_FILE(RTDWFITDD_messages.read_warning_true())
+            elif cred_dict.get('have_read_warning') is not None:
+                # same as above but lord knows what they put in there.
+                raise JSONInfileConfigException(RTDWFITDD_messages.read_warning_true())
+
             creds = (cred_dict['tenant_id'], cred_dict['client_id'], cred_dict['secret'])
+
         elif arrgs.infile:
             creds = arrgs.infile
+
         else:
             print 'WARNING: Credentials have not been passed in.\n You will need to enter them by hand.\n\n'
             creds = None

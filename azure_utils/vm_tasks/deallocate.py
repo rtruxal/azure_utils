@@ -6,6 +6,10 @@ from azure_utils.utils.log_funcs import log_level_info
 
 @log_level_info
 def _parse_specs(infile):
+    # If we're using JSON the creds will be a tuple at this point. Not an infile.
+    # so let's just call the tuple credential option inside of this aptly named function.
+    if isinstance(infile, tuple) and len(infile) == 3:
+        return infile
     if not exists(infile):
         raise IOError()
     regex = r':\s+(.*)$'
@@ -22,7 +26,7 @@ def deallocate(infile, resource_group=None, vm=None, wait=True, return_client=Fa
         tenantid = tenantid.strip('\r')
         appid = appid.strip('\r')
         secret = secret.strip('\r')
-    except IOError:
+    except IOError or TypeError:
         try:
             tenantid, appid, secret = infile
         except Exception:

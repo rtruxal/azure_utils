@@ -1,0 +1,28 @@
+
+!!!!WARNING!!!!!WARNING!!!!!WARNING!!!!!WARNING!!!!!WARNING!!!!!
+                 =============================
+                  RE: credentials_config.json
+                 =============================
+   ----------------------------------------------------------
+
+     IT IS NOT SAFE TO PERMANENTLY STORE CREDENTIALS IN THE
+                 credentials_config.json FILE.
+
+  
+
+    IF YOU WANT TO USE THIS CONFIG FILE, YOU ARE RESPONSIBLE
+                  FOR ENCRYPTING/DECRYPTING IT.
+
+   ----------------------------------------------------------
+
+    Now that you have read this, find the "have_read_warning"
+               LINE in credentials_config.json and
+
+                      COMPLETELY DELETE IT.
+
+
+         setting it to true (or anything else) will bring
+                         you back here.
+    ----------------------------------------------------------
+
+!!!!WARNING!!!!!WARNING!!!!!WARNING!!!!!WARNING!!!!!WARNING!!!!!

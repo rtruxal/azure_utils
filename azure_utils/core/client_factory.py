@@ -5,7 +5,7 @@ from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.resource import ResourceManagementClient
 
 from azure_utils.utils.custom_errors import ArgumentException
-from azure_utils.utils.subscription_id_file import load_sub_id
+from azure_utils.utils.json_ingress import load_sub_id
 
 
 # yaaaaaay The Class!!

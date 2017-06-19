@@ -6,6 +6,9 @@ from azure_utils.utils.log_funcs import log_level_info
 
 @log_level_info
 def _parse_specs(infile):
+    # Let's just include the tuple one inside of this function.
+    if isinstance(infile, tuple) and len(infile) == 3:
+        return infile
     if not exists(infile):
         raise IOError()
     regex = r':\s+(.*)$'
@@ -22,7 +25,8 @@ def boot(infile, resource_group=None, vm=None, wait=True, return_client=False):
         tenantid = tenantid.strip('\r')
         appid = appid.strip('\r')
         secret = secret.strip('\r')
-    except IOError:
+    except IOError or TypeError:
+        # aaaaand again.
         try:
             tenantid, appid, secret = infile
         except Exception:
