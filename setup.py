@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 setup(name='azure_utils',
-      version='0.1.1',
+      version='0.1.1rc1',
       description='Basic utils for working with azureRM and azureSM. Authentication using a ServicePrincipal',
       url='https://www.bscg.us/app-is-a-dumb-word',
       author='BSCG',
