@@ -69,11 +69,11 @@ To get them all, run the following command from the shell:
   "hosts": [
     {
       "cmdline_hostname": "foo_host_1",
-      "azure_hostname": "FooDBServerExampleResourceGroup"
+      "azure_hostname": "FooDBServer"
     },
     {
       "cmdline_hostname": "foo_host_2",
-      "azure_hostname": "FooWebServerExampleResourceGroup"
+      "azure_hostname": "FooWebServer"
     }
   ]
 }
