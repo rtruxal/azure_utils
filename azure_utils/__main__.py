@@ -2,16 +2,17 @@
 
 import argparse
 import json
+
 import pkg_resources
 
-from .utils.custom_errors import JSONInfileConfigException
-from .utils.custom_errors import ArgumentException
-from .utils.custom_errors import READ_THE_DAMN_WARNING_FILE
-from .utils.custom_errors import RTDWFITDD_messages
-from .vm_tasks import deallocate
-from .vm_tasks import get_status
-from .vm_tasks import turn_off
-from .vm_tasks import turn_on
+from azure_utils.utils.validations import __validate_args, __validate_command
+from azure_utils.utils.custom_errors import JSONInfileConfigException
+from azure_utils.utils.custom_errors import READ_THE_DAMN_WARNING_FILE
+from azure_utils.utils.custom_errors import RTDWFITDD_messages
+from azure_utils.vm_tasks import deallocate
+from azure_utils.vm_tasks import get_status
+from azure_utils.vm_tasks import turn_off
+from azure_utils.vm_tasks import turn_on
 
 
 class ICANN(dict):
@@ -39,14 +40,15 @@ class ICANN(dict):
         if use_config_file is True:
             from azure_utils import get_data
             try:
+                # for a source install.
                 with open(get_data('data/host_config.json'), 'r') as jsonfile:
                     config_dict = json.load(jsonfile)
             except Exception:
+                # for a binary install.
                 config_dict = json.load(pkg_resources.resource_stream('config', 'host_config.json'))
             finally:
                 del get_data
-            try:
-                # TODO: NICE LIST-COMPREHENSIONS DAWG. THEY WORK?
+            try: #...a bunch of list comprehensions.
                 self['host_nicknames'] = tuple([host_record['cmdline_hostname'] for host_record in config_dict.get('hosts')])
                 self['host_realnames'] = tuple([host_record['azure_hostname'] for host_record in config_dict.get('hosts')])
                 self['host_mappings'] = dict(zip(self['host_nicknames'], self['host_realnames']))
@@ -59,7 +61,7 @@ class ICANN(dict):
             # DEFINE CMDLINE-HOSTNAMES HERE IF YOU DON'T WANT TO USE THE CONFIG FILE.
             # KEYS == CMDLINE VM-NAMES/SHORTHAND; VALUES == VM-NAME DESIGNATED ON AZURE.
             self['host_mappings'] = {
-                'loc': 'localhost',
+                'loc': 'localhost', # <--this is useless.
                 # 'example' : 'exampleHostMachine',
             }
             self['host_realnames'] = self['host_mappings'].values()
@@ -73,45 +75,24 @@ class ICANN(dict):
         pass
 
 
-# validate that there aren't any conflicting arguments
-def __validate_args(args):
-    if args.json_credentials and args.infile_credentials:
-        raise ArgumentException('You can only use one credential format at a time.')
-
-    if args.wait and args.force:
-        print 'WARNING: You have specified both --wait & --force. Note that --force takes precedence. \nContinuing.'
-
-
-# validate that the command is a legal one.
-def __validate_command(action=None, host=None):
-    if action is None or host is None:
-        raise argparse.ArgumentError(argument=action, message='you must supply both an action & a host')
-
-    validator = ICANN()
-
-    assert action in validator['actions'], 'Action name error. Try azureutils --help.'
-    assert host in validator['host_nicknames'], 'Host name error. Try azureutils --help.'
-
-    pass
-
-
 def main(args=None):
     if args is None:
+        #TODO: lil' more coherence to these options.
         parser = argparse.ArgumentParser()
         parser.add_argument('action', nargs="?", help='options are <turnon|turnoff|deallocate>')
-        parser.add_argument('host', nargs="?", help='select a host options are <trump|bernie|kali>')
-        parser.add_argument('-C', '--json-credentials', action='store_true', default=False, help="use the internal PLAINTEXT config file, 'credentials_config.json', for Azure credentials. Default is False 'cuz this is dangerous if you don't read & follow the WARNING.txt file.")
+        parser.add_argument('host', nargs="?", help='select a host using `cmdline_hostname` from azure_utils/config/data/host_config.json <foo_host_1|foo_host_2|etc...>')
+        parser.add_argument('-j', '--json-credentials', action='store_true', default=False, help="use the internal PLAINTEXT config file, 'credentials_config.json', for Azure credentials. Default is False 'cuz this is dangerous if you don't read & follow the WARNING.txt file.")
         parser.add_argument('-i', '--infile-credentials', nargs="?", type=argparse.FileType('r'), default=None, help="pass in a text file containing your credentials. See example_credfile.txt for format")
         parser.add_argument('-w', '--wait', action='store_true', help="Wait for your vm to do whatever. Default true for applicable operations.")
         parser.add_argument('-f', '--force', action='store_true', help="Don't wait for vm's to be done doing things. Overrides -w.")
 
         arrgs = parser.parse_args()
 
-        # input validations.
+        # input validations imported from utils/validations.py
         __validate_args(arrgs)
         __validate_command(action=arrgs.action, host=arrgs.host)
 
-        # handle force/wait
+        # handle force/wait options
         if arrgs.force:
             wait = 'false'
         elif arrgs.wait:
@@ -122,8 +103,9 @@ def main(args=None):
 
         # handle credential-type
         if arrgs.json_credentials:
-            # import pdb
-            # pdb.set_trace()
+            # K so now we gonna try to deal with the input JSON.
+            # including non-.py "data" files within a python package has 2 flavors: binary-install & sdist compilation.
+            # thus the semi-excessive try/except statements.
             from azure_utils import get_data
             try:
                 # This uses the function `get_data()` from the top-level __init__.py file.
@@ -134,7 +116,6 @@ def main(args=None):
                 cred_dict = json.load(pkg_resources.resource_stream('config', 'credentials_config.json'))
             finally:
                 del get_data
-
             # Check if warnings have been read.
             if cred_dict.get('have_read_warning') == False:
                 #than we haven't changed the credfile man.
@@ -145,17 +126,20 @@ def main(args=None):
             elif cred_dict.get('have_read_warning') is not None:
                 # same as above but lord knows what they put in there.
                 raise JSONInfileConfigException(RTDWFITDD_messages.read_warning_true())
-
             creds = (cred_dict['tenant_id'], cred_dict['client_id'], cred_dict['secret'])
 
+        # This reads in the credentials in a specific way using regex, & needs to be passed an ascii file-object.
+        # eventually I'll change and explain that way, but for now you can follow the rabbit hole if your IDE is good.
         elif arrgs.infile:
             creds = arrgs.infile
 
+        # yep. happens later.
         else:
             print 'WARNING: Credentials have not been passed in.\n You will need to enter them by hand.\n\n'
             creds = None
 
-        # This is mostly a sanity check. 
+
+        # This is mostly a sanity check.
         # `wait` should be a bool & `creds` can be a filepath (aka a string), tuple, or NoneType.
         # regardless, they should both be defined by now. If this assert statement pops-off, thar B issues.
         assert wait and (creds or creds is None), 'argument error.'
@@ -173,6 +157,7 @@ def main(args=None):
         else:
             function_to_use(creds, resource_group=rg, vm=real_hostname)
 
+    # improper usage. Congrats tho; shouldn't be possible.
     else: exit(1)
 
 if __name__ == '__main__':

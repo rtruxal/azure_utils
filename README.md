@@ -3,31 +3,50 @@ Azure VM Utilities!
 
 ***WARNING:** IT IS NOT SAFE TO PERMANENTLY STORE YOUR AZURE SERVICE-PRINCIPAL CREDENTIALS IN A PLAINTEXT JSON DOC. DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
 
-##Usage:
+## Usage:
 
 ```sh
-# Assuming you're TEMPORARILY storing creds in the designated JSON file.
-~$ azureutils turnon host1
-host1 has been turned on.
 
-# Using the --infile-credentials (-i) option:
-~$ azureutils deallocate host2 -i /path/to/service/principal/credentials.txt
+# Hardest things about this:
+#   you need to find the file azure_utils/config/data/host_config.json and change it.
+#   you need to explicitly pass in your credential type.
+
+# Here are your 3 options:
+
+
+# 1.
+#-----by using the internal JSON file.
+~$ azureutils [-j|--json-credentials] turnon myVM1 
+myVM1 has been turned on.
+
+
+# 2.
+#----arg placement dont matta. Also don't use this option yet. 
+~$ azureutils deallocate myVM2 [-i|--infile-credentials] /path/to/service/principal/credentials.txt
 host2 successfully deallocated.
 
+# 3.
+#----prompt!
+~$ azureutils restart myVM1
+enter the exact tenant ID including dashes: 
+enter the exact Application/Client ID including dashes: 
+enter your secret service-principal code: 
+
+myVM1 restarted.
 ```
 
-#Installation:
-This package has dependancies on: `msrest`, `msrestazure`, & `azure`.  
+# Installation:
+This package has dependencies on: `msrest`, `msrestazure`, & `azure`.  
 
 To get them all, run the following command from the shell:
 ```sh
 ~$ pip install msrest msrestazure azure
 ```
-###Install:
+## Install:
 ```sh
-~$ git clone https://github.com/rtruxal/azure_utils.git
+~$ git clone https://github.com/rtruxal/azure_utils.git && cd ./azure_utils
 
-~$ nano azure_utils/config/host_config.json
+~$ nano azure_utils/config/data/host_config.json
 
 ~$ pip install .
 ```
@@ -41,7 +60,7 @@ To get them all, run the following command from the shell:
  - Everything else **IS** optional.
 
 
-###layout of `host_config.json`:
+### layout of `host_config.json`:
 ```json
 {
   "subscription_id": "11111111-1111-1111-111-111111111111",

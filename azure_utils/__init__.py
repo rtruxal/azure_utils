@@ -1,5 +1,4 @@
 import os
-#TODO: Y DO I NEED GLOBAL VARIABLES IN MY INIT FILE?!?!!?!?!?!??!
 def get_data(path):
     _ROOT = os.path.abspath(os.path.dirname(__file__))
     return os.path.realpath(os.path.join(_ROOT, 'config', path))
