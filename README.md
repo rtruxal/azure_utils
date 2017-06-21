@@ -9,7 +9,7 @@ Azure VM Utilities!
 
 # Hardest things about this:
 #   you need to find the file azure_utils/config/data/host_config.json and change it.
-#   you need to explicitly pass in your credential type.
+#   you need to explicitly pass in your credential type via 1 of 3 options.
 
 # Here are your 3 options:
 
