@@ -11,7 +11,7 @@ from azure_utils.utils.json_ingress import load_sub_id
 # yaaaaaay The Class!!
 class ClientFactory(object):
 
-    # Get the sub-id from your json config file.
+    # Get the sub-id from your json data file.
     # THIS IS NOT OPTIONAL.
     AZURE_SUB_ID = load_sub_id()
     # THIS IS NOT OPTIONAL.

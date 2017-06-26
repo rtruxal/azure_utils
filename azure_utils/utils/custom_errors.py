@@ -22,7 +22,7 @@ class READ_THE_DAMN_WARNING_FILE(BaseException):
 class RTDWFITDD_messages:
     from os import linesep
     read_warning_is_false = \
-        'Please be so kind as to read WARNING.txt. It can be located at `/path/to/python/env/Lib/<OS-SPECIFIC-PATH>/azure_utils/data/WARNING.txt.' \
+        'Please be so kind as to read WARNING.txt. It can be located at `/path/to/python/env/Lib/<OS-SPECIFIC-PATH>/azure_utils/config/WARNING.txt.' \
         + linesep + \
         'If you are on *NIX, try running `find /path/to/python/env -type f -name "WARNING.txt'
 
