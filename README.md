@@ -40,7 +40,7 @@ This package has dependencies on: `msrest`, `msrestazure`, & `azure`.
 
 To get them all, run the following command from the shell:
 ```sh
-~$ pip install msrest msrestazure azure
+~$ pip install msrest msrestazure azure=="2.0.0rc5"
 ```
 ## Install:
 ```sh
