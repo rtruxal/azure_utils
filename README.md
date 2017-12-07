@@ -40,6 +40,7 @@ K now when you're done proceed.
 # Storing or Passing-in Credentials:
 
    you need to explicitly pass in your service principals via 1 of 3 mechanisms.
+
 ```sh
 # Here are your 3 options:
 
