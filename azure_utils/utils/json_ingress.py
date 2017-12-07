@@ -22,8 +22,11 @@ from azure_utils import get_data
 def load_sub_id(default=True, alt=None):
     #TODO: Well I figured out how to do this for the other 2. Fix.
     if default is True:
+        # import pdb
+        # pdb.set_trace()
+        json_pth = get_data('config/host_config.json')
         try:
-            with open(get_data('config/host_config.json'), 'r') as jsonfile:
+            with open(json_pth, 'r') as jsonfile:
                 return str(json.load(jsonfile).get('subscription_id'))
         except Exception:
             try:

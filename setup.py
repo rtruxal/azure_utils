@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 setup(name='azure_utils',
-      version='0.1.4',
+      version='0.1.6rc1',
       description='Basic utils for working with azureRM and azureSM. Authentication using a ServicePrincipal',
       url='https://www.bscg.us/app-is-a-dumb-word',
       author='BSCG',
@@ -9,9 +9,9 @@ setup(name='azure_utils',
 
       packages=find_packages(),
 
+      # package_dir={'azure_utils' : 'azure_utils/data'},
+      package_data={'azure_utils' : ['data/config/*.json', 'data/logs/*.log']},
       include_package_data=True,
-      package_dir={'data' : 'azure_utils/data'},
-      package_data={'data' : ['data/*.json', 'data/*.log']},
 
       entry_points={
         'console_scripts' : [
@@ -23,7 +23,10 @@ setup(name='azure_utils',
             'azure',
             'msrest',
             'msrestazure',
+            'azure-common'
       ],
 
       zipsafe=False
       )
+
+

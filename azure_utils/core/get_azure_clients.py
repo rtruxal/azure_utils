@@ -159,6 +159,7 @@ def produce_clients(credential_token, alt_clientfactory_param_dict=None):
             resource=alt_clientfactory_param_dict['resource'],
             network=alt_clientfactory_param_dict['network'],
             compute=alt_clientfactory_param_dict['compute'],
+            credentials=credential_token
         )
         return clients
 

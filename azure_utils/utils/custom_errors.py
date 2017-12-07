@@ -16,6 +16,9 @@ class JSONInfileConfigException(BaseException):
 class JSONInfileParsingException(BaseException):
     pass
 
+class FeatureNotYetImplemented(BaseException):
+    pass
+
 class READ_THE_DAMN_WARNING_FILE(BaseException):
     pass
 

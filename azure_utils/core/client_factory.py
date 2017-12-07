@@ -1,5 +1,5 @@
+from msrestazure.azure_active_directory import ServicePrincipalCredentials as SPC
 from azure.common.credentials import ServicePrincipalCredentials
-
 from azure.mgmt.compute import ComputeManagementClient
 from azure.mgmt.network import NetworkManagementClient
 from azure.mgmt.resource import ResourceManagementClient
@@ -67,7 +67,7 @@ class ClientFactory(object):
              or as a generator using `get_client_generator()'
 
         """
-        assert isinstance(credentials, ServicePrincipalCredentials) or type(credentials) is dict
+        assert isinstance(credentials, ServicePrincipalCredentials) or isinstance(credentials, SPC)
         if not resource and not network and not compute:
             raise ArgumentException('Must specify a client-type')
 

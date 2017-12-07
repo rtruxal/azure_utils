@@ -1,4 +1,5 @@
 azure == 2.0.0rc5
-msrest >= 0.4.0
-msrestazure > 0.4.0
+msrest == 0.4.0
+msrestazure == 0.4.0
+azure-common == 1.1.4
 

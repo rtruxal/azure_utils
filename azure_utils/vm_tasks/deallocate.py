@@ -1,10 +1,10 @@
 import re
 from os.path import exists
 from azure_utils.core.get_azure_clients import get_service_principal_token, produce_clients
-from azure_utils.utils.log_funcs import log_level_info
+from azure_utils.utils.log_funcs import INFO_expected_exception, WARN_unexpected_exception
 
 
-@log_level_info
+@WARN_unexpected_exception
 def _parse_specs(infile):
     # If we're using JSON the creds will be a tuple at this point. Not an infile.
     # so let's just call the tuple credential option inside of this aptly named function.
@@ -17,7 +17,7 @@ def _parse_specs(infile):
         messy_isht = secrets.read()
     return re.findall(regex, messy_isht, flags=re.MULTILINE)
 
-@log_level_info
+@INFO_expected_exception
 def deallocate(infile, resource_group=None, vm=None, wait=True, return_client=False):
     if not resource_group or not vm:
         raise AssertionError('you must specify both a vm and a resource_group')

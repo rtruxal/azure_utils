@@ -1,7 +1,11 @@
 Azure VM Utilities!
 ===================
+**NOTE**:
+ - `"subscription_id"` in `host_config.json` is **NOT** optional.
+ - Everything else **IS** optional.
 
-***WARNING:** IT IS NOT SAFE TO PERMANENTLY STORE YOUR AZURE SERVICE-PRINCIPAL CREDENTIALS IN A PLAINTEXT JSON DOC. DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
+**WARNING**:
+IT IS NOT SAFE TO PERMANENTLY STORE YOUR AZURE SERVICE-PRINCIPAL CREDENTIALS IN A PLAINTEXT JSON DOC. DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
 
 ## Usage:
 
@@ -16,27 +20,27 @@ Azure VM Utilities!
 
 # 1.
 #-----by using the internal JSON file.
-~$ azureutils [-j|--json-credentials] turnon myVM1 
+~$ azureutils [-j|--json-credentials] turnon myVM1
 myVM1 has been turned on.
 
 
 # 2.
-#----arg placement dont matta. Also don't use this option yet. 
+#----arg placement dont matta. Also don't use this option yet.
 ~$ azureutils deallocate myVM2 [-i|--infile-credentials] /path/to/service/principal/credentials.txt
 host2 successfully deallocated.
 
 # 3.
 #----prompt!
 ~$ azureutils restart myVM1
-enter the exact tenant ID including dashes: 
-enter the exact Application/Client ID including dashes: 
-enter your secret service-principal code: 
+enter the exact tenant ID including dashes:
+enter the exact Application/Client ID including dashes:
+enter your secret service-principal code:
 
 myVM1 restarted.
 ```
 
 # Installation:
-This package has dependencies on: `msrest`, `msrestazure`, & `azure`.  
+This package has dependencies on: `msrest`, `msrestazure`, & `azure`.
 
 To get them all, run the following command from the shell:
 ```sh
@@ -55,9 +59,6 @@ To get them all, run the following command from the shell:
 
 
 
-**NOTE**: 
- - `"subscription_id"` in `host_config.json` is **NOT** optional. 
- - Everything else **IS** optional.
 
 
 ### layout of `host_config.json`:

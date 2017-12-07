@@ -1,6 +1,5 @@
 from _version import __version__
 
-
 import os
 def get_data(path):
     _ROOT = os.path.abspath(os.path.dirname(__file__))
@@ -12,6 +11,7 @@ def put_logs(log_id='default'):
 import vm_tasks
 import core
 import utils
+import data
 
 # NO. BAD WILDCARDS.
 __all__ = [
