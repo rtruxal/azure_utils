@@ -1,11 +1,12 @@
 Azure VM Utilities!
 ===================
 **NOTE**:
- - `"subscription_id"` in `host_config.json` is **NOT** optional.
+ - Entering your `"subscription_id"` in `azure_utils/data/config/host_config.json` is **NOT** optional.
  - Everything else **IS** optional.
 
 **WARNING**:
-IT IS NOT SAFE TO PERMANENTLY STORE YOUR AZURE SERVICE-PRINCIPAL CREDENTIALS IN A PLAINTEXT JSON DOC. DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
+IT IS NOT SAFE TO PERMANENTLY STORE YOUR AZURE SERVICE-PRINCIPAL CREDENTIALS IN A PLAINTEXT JSON DOC.
+DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
 
 # Pre-Install:
 
@@ -21,12 +22,13 @@ After that,
 ```
 Now, you're going to need to populate your host-list & determine if you wanna use the credential-file.
 Either way, you're gonna need to:
-### **GO MODIFY..**
-### `azure_utils/config/data/host_config.json`
+### **GO TO THE `azure_utils/config/ DIRECTORY.`**
+Then you're prly gonna wanna...
+### EDIT `azure_utils/config/data/host_config.json`
 ### &
 ### `azure_utils/config/data/credentials_config.json`
 
-K now when you're done proceed.
+K now when you're done, proceed.
 
 
 # Installation:
