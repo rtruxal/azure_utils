@@ -16,7 +16,7 @@ DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
 remotehost-A has been turned on.
 ```
 
-### Note that the statusof keyword retrieves the actual hostname.
+### Note that the `statusof` keyword retrieves the actual hostname.
 ```sh
 ~$ azureutils -j statusof remotehost-A
 Webserver-A-WestUS2 is currently running. It's been on since: 2016-09-30 22:04:22.355673+00:00
