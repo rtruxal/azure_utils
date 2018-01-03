@@ -8,6 +8,50 @@ Azure VM Utilities!
 IT IS NOT SAFE TO PERMANENTLY STORE YOUR AZURE SERVICE-PRINCIPAL CREDENTIALS IN A PLAINTEXT JSON DOC.
 DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
 
+# Usage:
+
+```sh
+# -j assumes you're using the default json-file to store your AAD service-principal credentials.
+~$ azureutils -j turnon remotehost-A
+remotehost-A has been turned on.
+
+# note that the statusof keyword retrieves the actual hostname.
+~$ azureutils -j statusof remotehost-A
+Webserver-A-WestUS2 is currently running. It's been on since: 2016-09-30 22:04:22.355673+00:00
+
+# note also that we can get long-form stats by using the -l flag.
+~$ azureutils -jl statusof remotehost-A
+REMOTEHOST-A:
+resource_id: ==> 8ee39295-312a-4df0-a928-80a23028fc87
+hostname: ==> Webserver-A-WestUS2
+last_up: ==> 2016-09-30 22:04:22.355673+00:00
+prov_state: ==> Updating
+power_state: ==> VM running
+location: ==> westus2
+
+# turning off a vm is not the same as deallocating it!
+# You're still being charged, & your dynamic-ip won't change. Good for rebooting.
+~$ azureutils -j turnoff remotehost-A
+remotehost-A has been shut down.
+
+~$ azureutils -j statusof remotehost-A
+Webserver-A-WestUS2 is currently stopped (vm is still allocated).
+
+~$ azureutils -j deallocate remotehost-A
+remotehost-A has been deallocated.
+
+~$ azureutils -jl statusof remotehost-A
+REMOTEHOST-A:
+resource_id: ==> 8ee39295-312a-4df0-a928-80a23028fc87
+hostname: ==> Webserver-A-WestUS2
+last_up: ==> 2017-09-30 22:04:22.355673+00:00
+prov_state: ==> Provisioning succeeded
+power_state: ==> VM deallocated
+location: ==> westus2
+```
+
+aaaand that's all for now.
+
 # Pre-Install:
 
 This package has dependencies on: `msrest`, `msrestazure`, `azure`, & `azure-common`.
