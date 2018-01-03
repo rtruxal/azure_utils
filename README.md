@@ -10,7 +10,7 @@ DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
 
 # Usage:
 
-### The -j flag indicates you're using the default json-file to store your AAD service-principal credentials.
+### The `-j` flag indicates you're using the default json-file to store your AAD service-principal credentials.
 ```sh
 ~$ azureutils -j turnon remotehost-A
 remotehost-A has been turned on.
@@ -22,7 +22,7 @@ remotehost-A has been turned on.
 Webserver-A-WestUS2 is currently running. It's been on since: 2016-09-30 22:04:22.355673+00:00
 ```
 
-### Note also that we can get long-form stats by using the -l flag.
+### Note also that we can get long-form stats by using the `-l` flag.
 ```sh
 ~$ azureutils -jl statusof remotehost-A
 REMOTEHOST-A:
