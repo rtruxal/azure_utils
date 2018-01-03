@@ -14,12 +14,16 @@ DO NOT SKIP THE README SECTION ON STORING CREDENTIALS.
 ## The -j flag indicates you're using the default json-file to store your AAD service-principal credentials.
 ~$ azureutils -j turnon remotehost-A
 remotehost-A has been turned on.
+```
 
 ## Note that the statusof keyword retrieves the actual hostname.
+```sh
 ~$ azureutils -j statusof remotehost-A
 Webserver-A-WestUS2 is currently running. It's been on since: 2016-09-30 22:04:22.355673+00:00
+```
 
 ## Note also that we can get long-form stats by using the -l flag.
+```sh
 ~$ azureutils -jl statusof remotehost-A
 REMOTEHOST-A:
 resource_id: ==> 8ee39295-312a-4df0-a928-80a23028fc87
@@ -28,14 +32,19 @@ last_up: ==> 2016-09-30 22:04:22.355673+00:00
 prov_state: ==> Updating
 power_state: ==> VM running
 location: ==> westus2
+```
 
 ## Turning off a vm is not the same as deallocating it! Good for rebooting without changing your dynamic-ip.
+```sh
 ~$ azureutils -j turnoff remotehost-A
 remotehost-A has been shut down.
 
 ~$ azureutils -j statusof remotehost-A
 Webserver-A-WestUS2 is currently stopped (vm is still allocated).
+```
 
+## Let's deallocate & get the long-form status to be sure:
+```sh
 ~$ azureutils -j deallocate remotehost-A
 remotehost-A has been deallocated.
 
